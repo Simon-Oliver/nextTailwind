@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 
 export default function login(){
     const [form, setForm] = useState({email:"", password:""});
+    const [qr, setQr] = useState({loaded:false,code:""})
 
-    let onSubmit = (e) =>{
+    let onSubmit = async (e) =>{
         e.preventDefault()
-        console.log(form)
+        let res = await fetch("/api/hello",{
+          method: "Put",
+          body: JSON.stringify(form)
+        })
+        let data = await res.json()
+        setQr({code: data.code, loaded: true})
+        console.log("Submited",form, "Data",data)
     }
 
     let onChange = (e) => {
@@ -73,6 +80,8 @@ export default function login(){
     </form>
   </div>
 </div>
+
+      <img src={qr.code}/>
 
         </div>
     )
