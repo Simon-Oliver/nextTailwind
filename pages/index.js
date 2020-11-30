@@ -17,15 +17,15 @@ export default function Home() {
       </Head>
 
       <div className="container bg-gray-200 rounded-xl">
-      <div className='md:flex rounded-lg p-24 justify-center'>
-      <img
-        className='h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6'
-        src='https://images.unsplash.com/photo-1605940169840-953b98c0ed40?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80'
-      />
-      </div>
+        <div className='md:flex rounded-lg p-24 justify-center'>
+          <img
+            className='h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6'
+            src='https://images.unsplash.com/photo-1605940169840-953b98c0ed40?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80'
+          />
+        </div>
       </div>
 
-     
+
       <main className={styles.main}>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
