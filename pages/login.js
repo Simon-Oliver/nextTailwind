@@ -1,9 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Test from "./test"
 
 export default function login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [qr, setQr] = useState({ loaded: false, code: "" })
+  const [response, setResponse] = useState({ res: "" })
+
+  // useEffect(async () => {
+  //   let count = 0
+  //  try{
+  //   let res = await fetch("/api/polling", {
+  //     method: "Put",
+  //     body: JSON.stringify({count:count})
+  //   })
+  //   let data = await res.json()
+  //   setResponse(data)
+  //   count++
+  //  } catch(e){
+  //   console.log("Client error -----", e)
+  //  }
+  // })
+
+  useEffect(async () => {
+    let count = 0
+    const interval = await setInterval(async () => {
+      let res = await fetch("/api/polling", {
+        method: "Put",
+        body: JSON.stringify({ count: count })
+      })
+      let data = await res.json()
+      setResponse(data)
+      count++
+    }
+      , 1000);
+    return async () => await clearInterval(interval);
+  }, []);
 
   let onSubmit = async (e) => {
     e.preventDefault()
@@ -25,7 +56,6 @@ export default function login() {
 
   return (
     <div>
-      <Test data={qr.code}></Test>
       <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
           <div>
@@ -78,6 +108,8 @@ export default function login() {
           Sign in
         </button>
             </div>
+            <Test data={qr.code}></Test>
+            <div>{response.res}</div>
           </form>
         </div>
       </div>
