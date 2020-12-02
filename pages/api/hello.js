@@ -3,17 +3,15 @@ var QRCode = require('qrcode')
 
 export default async (req, res) => {
   res.statusCode = 200
-  const {email, password} = JSON.parse(req.body);
-try{
-  const qrData = await checkAuth(email, password)
-  console.log("--------->",qrData)
-  res.json(qrData);
-  
-} catch(e){
-  res.status(e.status).json(e);
-}
+  const { email, password } = JSON.parse(req.body);
+  try {
+    const qrData = await checkAuth(email, password)
+    console.log("--------->", qrData)
+    res.json(qrData);
 
-  
+  } catch (e) {
+    res.status(e.status).json(e);
+  }
 }
 
 
@@ -23,13 +21,13 @@ const checkAuth = async (email, pw) => {
     status: 0,
     message: ""
   }
-  if(email == "test@test.com" && pw == "123"){
+  if (email == "test@test.com" && pw == "123") {
     resObj.auth = true;
     resObj.status = 200;
     resObj.code = await QRCode.toDataURL('I am a pony!')
     return resObj
-    
-  } else{
+
+  } else {
     resObj.message = "Username or password incorrect"
     resObj.status = 401;
     throw resObj;
