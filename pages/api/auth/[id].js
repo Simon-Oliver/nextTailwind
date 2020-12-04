@@ -1,22 +1,20 @@
 const fs = require("fs")
+var QRCode = require('qrcode')
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const {
     query: { id },
   } = req
-  console.log("SERVER ----",req.query)
-  const dataRet = fakeDataBase(id)
-  console.log(dataRet)
-  return res.json(dataRet);
 
-}
 
-const fakeDataBase = (id) => {
-  if(id == "1234"){
-    return {isLogin: true}
-  } else {
-    return {isLogin: false, }
+let obj = {}
+  try {
+    console.log("SERVER ----", req.query)
+    obj.code = await QRCode.toDataURL(`"id:${id}"`)
+    console.log(obj)
+    return res.json(obj);
 
+  } catch (e) {
+    res.status(e.status).json(e);
   }
-
 }

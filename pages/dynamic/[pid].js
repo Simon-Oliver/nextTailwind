@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
+import Test from "../test"
 
 const Dynamic = (props) => {
     const [response, setResponse] = useState({ res: "Test", isLogin: false })
@@ -17,7 +18,7 @@ const Dynamic = (props) => {
                 <h5 class="text-3xl font-bold mb-4 mt-0">My Title</h5>
                 <p class="text-gray-700 text-sm pb-5">Content goes here</p>
                 <img class="mx-auto shadow-xl rounded-lg" src={props.data} />
-                {response.isLogin ? <p> {`Post: ${response.res}`}</p> : ""}
+                {response.code ?  <Test data={response.code}></Test> : ""}
             </div>
         </div>
     )
