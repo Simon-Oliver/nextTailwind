@@ -6,6 +6,9 @@ export default function Test(props) {
     <div className={styles.container}>
       <div className={styles.grid}>
         <h1 className={styles.heading1}>Heading 1</h1>
+        <p className={styles.italic}>
+          For our example, I’ve decided to go with a default body copy spacing just yet.
+        </p>
         <p className={styles.typo}>
           For our example, I’ve decided to go with a default body copy size of 18px, which is large
           but not too large, and a leading ratio of 1.333 (or, equivalent to a perfect fourth). This
