@@ -24,9 +24,9 @@ export default function login() {
   useEffect(async () => {
     let count = 0
     const interval = await setInterval(async () => {
-      let res = await fetch("/api/polling", {
+      let res = await fetch(`/api/polling` , {
         method: "Put",
-        body: JSON.stringify({ count: count })
+        body: JSON.stringify({ count: count})
       })
       let data = await res.json()
       setResponse(data)

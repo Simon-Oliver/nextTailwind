@@ -2,6 +2,7 @@ const jsonData = require("./testData.json")
 
 export default async (req, res) => {
     //const { count } = JSON.parse(req.body);
+    console.log(req.body)
     try {
         const data = { res: `Server response isLogin ${jsonData.isLogin}` }
         console.log("--------->", data)
