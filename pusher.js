@@ -21,6 +21,9 @@ const pusher = new Pusher({
     cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER
 });
 
+let messages = []
+let users = []
+
 app.prepare()
     .then(() => {
 
@@ -31,12 +34,14 @@ app.prepare()
         server.use(express.urlencoded({ extended: true }));
 
         server.get('/people', (req, res, next) => {
-            res.json({ status: 'success', people:[{name: "Test1", isOnline: true}, {name:"Test2", isOnline:false}] });
+            res.json({ status: 'success', people: [{ name: "Test1", status: "" }, { name: "Test2", status: "" }] });
         });
 
         server.post('/message/:id', (req, res, next) => {
             const id = req.params.id;
-            const {msg} = req.body
+            const { msg } = req.body
+            const time = Date.now()
+            messages.push({ msg, id, time })
 
             console.log(req.body)
 
@@ -45,6 +50,36 @@ app.prepare()
             });
 
         });
+
+        server.post('/user/:id', (req, res, next) => {
+            const id = req.params.id;
+            const { name, status } = req.body
+
+
+            const index = users.findIndex((e) => e.id === id);
+
+            if (index === -1) {
+                if(name){
+                    users.push({ name, status, id });
+                }
+             
+            } else {
+                users[index] = { ...users[index], status }
+            }
+
+
+            pusher.trigger('websocket-test', 'users', {
+                users
+            });
+            console.log("After pusher trigger",users)
+        });
+
+        server.get('/init', (req, res) => {
+            let obj = {users,messages}
+            console.log(obj)
+            return res.json(obj);
+        });
+        
 
         // server.post('/:presence/:id', (req, res, next) => {
         //     const id = req.params.id;

@@ -46,6 +46,7 @@ export default function socket() {
 
         });
 
+        window.onbeforeunload = pusher.disconnect()
 
         axios.get('http://localhost:8000/people').then(({ data }) => {
             const { people = [] } = data;
