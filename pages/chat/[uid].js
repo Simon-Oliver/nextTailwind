@@ -100,24 +100,22 @@ const Chat = (props) => {
           class={`${e.isUser ? 'col-start-6 col-end-13' : 'col-start-1 col-end-8'} p-3 rounded-lg`}
         >
           <div
-            class={`flex ${
-              !e.isUser ? 'flex-row items-center' : 'items-center justify-start flex-row-reverse'
-            }`}
+            class={`flex ${!e.isUser ? 'flex-row items-center' : 'items-center justify-start flex-row-reverse'
+              }`}
           >
             <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
               A
             </div>
             <div
-              class={`relative text-sm ${
-                e.isUser ? 'bg-indigo-100 mr-3' : 'bg-white ml-3'
-              } py-2 px-4 shadow rounded-xl`}
+              class={`relative text-sm ${e.isUser ? 'bg-indigo-100 mr-3' : 'bg-white ml-3'
+                } py-2 px-4 shadow rounded-xl`}
             >
               <div>{e.msg}</div>
               {e.isLast ? (
                 <div class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500">Seen</div>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
           </div>
         </div>
@@ -129,10 +127,14 @@ const Chat = (props) => {
   return (
     <div className="flex items-center justify-center">
       <div class="wd-auto grid grid-cols-12 gap-y-2">{renderMessage(messages)}</div>
-      <form onSubmit={(e) => sendMsg(e)} onChange={(e) => onInputChange(e)}>
-        <input name="msg" type="text" value={input.msg}></input>
-        <button>Send MSG</button>
-      </form>
+      <div className="relative w-full">
+      <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+          <form onSubmit={(e) => sendMsg(e)} onChange={(e) => onInputChange(e)}>
+            <input className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" name="msg" type="text" value={input.msg}></input>
+            <button class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">Send MSG</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
