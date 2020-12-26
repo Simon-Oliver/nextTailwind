@@ -19,7 +19,7 @@ const pusher = new Pusher({
   cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
 });
 
-let messages = [{ msg: 'Hi! How are you?', id: 123, isSeen: false }];
+let messages = [{ msg: 'Hi! How are you?', uid: 123, isSeen: false, mid: 78 }];
 let users = [];
 
 app
@@ -43,9 +43,9 @@ app
 
     server.post('/message/:id', (req, res, next) => {
       const id = req.params.id;
-      const { msg } = req.body;
+      const { msg, mid } = req.body;
       const time = Date.now();
-      messages.push({ msg, id, time });
+      messages.push({ msg, uid: id, time, mid, isSeen:false });
 
       console.log(req.body);
 
@@ -53,7 +53,7 @@ app
         messages,
       });
 
-      return res.status('200');
+      return res.status(200).send();
     });
 
     server.post('/user/:id', (req, res, next) => {
@@ -76,11 +76,35 @@ app
       console.log('After pusher trigger', users);
     });
 
-    server.post('/seen', (req, res, next) => {
-      console.log('/seen');
-      pusher.trigger('websocket-test', 'messageSeen', {
-        isSeen: true,
-      });
+    server.post('/seen/:id', (req, res, next) => {
+      const id = req.params.id;
+
+      let newMsg = messages.filter(e => e.mid === req.body.mid && !e.isSeen && e.uid !== id)
+      console.log("NewMsg",newMsg)
+      if (newMsg.length >0) {
+        newMsg = { ...newMsg[0], isSeen: true }
+
+        const updatedMsg = messages.map(e => {
+          if (newMsg.mid === e.mid) {
+            return { ...e, isSeen: true }
+          } else { return { ...e } }
+
+        })
+
+        messages = updatedMsg
+
+        console.log(messages)
+        pusher.trigger('websocket-test', 'messageSeen', {messages});
+      }
+
+
+      // if (uid == id) {
+      //   const data = obj
+      //   console.log('pushing ---->', data, obj, req.body)
+      //   pusher.trigger('websocket-test', 'messageSeen', { ...data, isSeen: true });
+
+      // }
+      return res.status(200).send();
     });
 
     server.get('/init', (req, res) => {

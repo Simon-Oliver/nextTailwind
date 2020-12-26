@@ -4,15 +4,16 @@ import axios from 'axios';
 import Test from '../test';
 import Pusher from 'pusher-js';
 import e from 'cors';
+const uuid = require('uuid').v4;
+
+import Messages from "../../components/Message/Messages"
 
 const Chat = (props) => {
   const [response, setResponse] = useState({});
-  const [messages, setMessages] = useState([{ msg: 'Test Message', id: 123 }]);
+  const [messages, setMessages] = useState([{ msg: 'Test Message', uid: 123, mid: 834, isRead: false }]);
   const [input, setInput] = useState({ msg: '' });
   const router = useRouter();
   const { uid } = router.query;
-
-  console.log('------------------------+++++++++ Props', props);
 
   useEffect(() => {
     let pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY, {
@@ -24,16 +25,16 @@ const Chat = (props) => {
     let channel = pusher.subscribe('websocket-test');
 
     channel.bind('users', function (data) {
-      console.log('Received users: ', data.users);
     });
 
     channel.bind('message', function (data) {
+      console.log('Messages updated', data)
       setMessages(data.messages);
-      console.log('Received messages: ', data.messages);
     });
 
-    channel.bind('messageSeen', function (data) {
-      console.log('Seen!!!!');
+    channel.bind('messageSeen', (data)=>{
+      console.log('Messages updated', data)
+      setMessages(data.messages);
     });
 
     axios.post(`http://localhost:8000/user/${uid}`, { status: 'online' });
@@ -58,15 +59,10 @@ const Chat = (props) => {
     };
   }, []);
 
-  //   useEffect(() => {
-  //     console.log('###### seen sent');
-  //     axios.post('http://localhost:8000/seen');
-  //   });
 
   const sendMsg = (e) => {
     e.preventDefault();
-    console.log('Sending...');
-    axios.post(`http://localhost:8000/message/${uid}`, { msg: input.msg });
+    axios.post(`http://localhost:8000/message/${uid}`, { msg: input.msg, mid: uuid(), uid: uid });
   };
 
   const onInputChange = (e) => {
@@ -74,65 +70,22 @@ const Chat = (props) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const renderMessage = (oldMsg) => {
-    const msg = oldMsg.map((e) => {
-      if (e.id === uid) {
-        return { ...e, isUser: true };
-      } else {
-        return { ...e, isUser: false };
-      }
-    });
 
-    var previousNotUserMsg,
-      index = msg.length - 1;
-    for (; index >= 0; index--) {
-      if (msg[index].isUser == true) {
-        previousNotUserMsg = index;
-        break;
-      }
-    }
 
-    msg[previousNotUserMsg] = { ...msg[previousNotUserMsg], isLast: true };
-    console.log('<<<<<<<<<<< Render Messsage', msg);
-    return msg.map((e, i) => {
-      return (
-        <div
-          class={`${e.isUser ? 'col-start-6 col-end-13' : 'col-start-1 col-end-8'} p-3 rounded-lg`}
-        >
-          <div
-            class={`flex ${!e.isUser ? 'flex-row items-center' : 'items-center justify-start flex-row-reverse'
-              }`}
-          >
-            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-              A
-            </div>
-            <div
-              class={`relative text-sm ${e.isUser ? 'bg-indigo-100 mr-3' : 'bg-white ml-3'
-                } py-2 px-4 shadow rounded-xl`}
-            >
-              <div>{e.msg}</div>
-              {e.isLast ? (
-                <div class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500">Seen</div>
-              ) : (
-                  ''
-                )}
-            </div>
-          </div>
-        </div>
-      );
-    });
-  };
-
-  console.log(response);
   return (
     <div className="flex items-center justify-center">
-      <div class="wd-auto grid grid-cols-12 gap-y-2">{renderMessage(messages)}</div>
-      <div className="relative w-full">
+      <Messages
+        messages={messages}
+        uid={uid}
+      ></Messages>
       <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
-          <form onSubmit={(e) => sendMsg(e)} onChange={(e) => onInputChange(e)}>
-            <input className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" name="msg" type="text" value={input.msg}></input>
-            <button class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">Send MSG</button>
-          </form>
+        <div className="relative w-full">
+          <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+            <form onSubmit={(e) => sendMsg(e)} onChange={(e) => onInputChange(e)}>
+              <input className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" name="msg" type="text" value={input.msg}></input>
+              <button class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">Send MSG</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
