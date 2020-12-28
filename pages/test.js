@@ -26,7 +26,7 @@ export default function Test(props) {
                 uid={uid}
             ></Messages>
             <button onClick={()=> {
-                 axios.post('http://localhost:8000/seen', { seen: "1235" });
+                 axios.post('http://localhost:8000/seen', { seen: "123" });
                 // let newMsg = [...messages, { msg: "1234", isUser: true, id: 123, isRead: true }]
                 // setMessages(newMsg)
             }}>Add Message</button>

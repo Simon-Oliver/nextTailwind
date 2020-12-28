@@ -25,6 +25,7 @@ const Chat = (props) => {
     let channel = pusher.subscribe('websocket-test');
 
     channel.bind('users', function (data) {
+      console.log("Added User", data)
     });
 
     channel.bind('message', function (data) {
@@ -34,7 +35,7 @@ const Chat = (props) => {
 
     channel.bind('messageSeen', (data)=>{
       console.log('Messages updated', data)
-      setMessages(data.messages);
+      setMessages(data.messages)
     });
 
     axios.post(`http://localhost:8000/user/${uid}`, { status: 'online' });

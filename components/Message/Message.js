@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function Message(props) {
-const [message, setMessage] = useState({})
-    
+    const [message, setMessage] = useState({})
 
-    useEffect(()=>{
-        console.log("Message",props)
-        const {msg, isSeen, isUser, mid, isLast} = props
-        setMessage({msg, isSeen, isUser, mid, isLast})
-    },[message])
+
+    useEffect(() => {
+        console.log("Message", props)
+        const { msg, isSeen, isUser, mid, isLast } = props
+        setMessage({ msg, isSeen, isUser, mid, isLast })
+    }, [])
 
     return (
         <div
@@ -26,11 +26,7 @@ const [message, setMessage] = useState({})
                         } py-2 px-4 shadow rounded-xl`}
                 >
                     <div>{message.msg}</div>
-                    {message.isLast && message.isUser? (
-                        <div class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500">{message.isSeen ? "Read": "Unread"}</div>
-                    ) : (
-                            ''
-                        )}
+                    {props.children}
                 </div>
             </div>
         </div>
