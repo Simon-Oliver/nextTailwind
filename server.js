@@ -3,6 +3,15 @@ const uuid = require('uuid').v4;
 const next = require('next');
 const Pusher = require('pusher');
 const express = require('express');
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const serialPort = new SerialPort('/dev/cu.usbserial-14320', { baudRate: 9600 });
+
+const parser = serialPort.pipe(new Readline({ delimiter: '\n' }));
+
+
+
+
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 8000;
@@ -30,6 +39,14 @@ app
     server.use(cors());
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
+
+    // Read the port data
+serialPort.on("open", () => {
+  console.log('serial port open');
+});
+parser.on('data', data =>{
+  console.log('got word from arduino:', data);
+});
 
     server.get('/people', (req, res, next) => {
       res.json({
