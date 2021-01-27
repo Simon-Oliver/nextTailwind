@@ -14,9 +14,13 @@ const Post = (props) => {
 
     const overrides = {
         date: props => <p className={styles.date} {...props} />,
+        h2: props => <h2 className={styles.subheading1} {...props} />,
+        h3: props => <h3 className={styles.subheading2} {...props} />,
     }
 
     const serializers = {
+        listItem: props => props.node.listItem == "number" ? <li className={styles.number} {...props} /> : <li className={styles.bullet} {...props} />,
+
         types: {
             block: props =>
                 // Check if we have an override for the “style”
@@ -31,15 +35,17 @@ const Post = (props) => {
     }
 
     return (
-        <article>
-            <h1>{props.title}</h1>
-            <BlockContent
-                blocks={props.body}
-                imageOptions={{ w: 320, h: 240, fit: 'max' }}
-                serializers={serializers}
-                {...client.config()}
-            />
-        </article>
+        <div className={styles.blogContainer}>
+            <article >
+                <h1 className={styles.title}>{props.title.toUpperCase()}</h1>
+                <BlockContent
+                    blocks={props.body}
+                    imageOptions={{ w: 320, h: 240, fit: 'max' }}
+                    serializers={serializers}
+                    {...client.config()}
+                />
+            </article>
+        </div>
     )
 }
 
