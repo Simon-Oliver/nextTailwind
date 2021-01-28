@@ -4,6 +4,7 @@ import BlockContent from '@sanity/block-content-to-react'
 import groq from 'groq'
 import styles from '../css.module.css';
 
+
 import React, { useEffect } from 'react'
 
 const Post = (props) => {
@@ -34,13 +35,25 @@ const Post = (props) => {
         }
     }
 
+    const image = (
+        <img
+            width={2000}
+            height={1000}
+            alt={`Cover Image for ${title}`}
+            className={cn('shadow-small', {
+                'hover:shadow-medium transition-shadow duration-200': slug,
+            })}
+            src={imageBuilder.image(url).height(1000).width(2000).url()}
+        />
+    )
+
     return (
         <div className={styles.blogContainer}>
-            <article >
+            <article className={styles.article} >
                 <h1 className={styles.title}>{props.title.toUpperCase()}</h1>
                 <BlockContent
                     blocks={props.body}
-                    imageOptions={{ w: 320, h: 240, fit: 'max' }}
+                    imageOptions={{ w: 2000, h: 850, fit: 'crop' }}
                     serializers={serializers}
                     {...client.config()}
                 />

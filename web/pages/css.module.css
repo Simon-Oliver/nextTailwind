@@ -5,6 +5,12 @@
   line-height: 1.5;
 }
 
+.article {
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 20px;
+}
+
 .blogContainer {
   display: flex;
   align-items: center;
@@ -17,14 +23,16 @@
   font-size: 16px;
   line-height: 1.5;
   color: gray;
+  margin-top: 18px;
+  margin-bottom: 16px;
 }
 
 .subheading1 {
   font-family: "Open Sans", sans-serif;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 24px;
   line-height: 1.5;
-  margin-top: 32px;
+  margin-top: 24px;
   margin-bottom: 16px;
 }
 
@@ -39,7 +47,13 @@
 
 .title {
   font-weight: 800;
-  font-size: 28px;
+  font-size: 48px;
+  margin-top: 20px;
+  margin-bottom: 18px;
+}
+
+.img {
+  box-shadow: 0 5px 10px rgb(0 0 0 / 12%);
 }
 
 .number {
