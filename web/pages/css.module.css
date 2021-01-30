@@ -6,8 +6,8 @@
 }
 
 .article {
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 80px;
+  margin-right: 80px;
   padding: 20px;
 }
 
@@ -47,13 +47,15 @@
 
 .title {
   font-weight: 800;
-  font-size: 48px;
-  margin-top: 20px;
-  margin-bottom: 18px;
+  font-size: 6.25rem;
+  line-height: 0.85;
+  margin-top: 8rem;
+  margin-bottom: 4rem;
 }
 
-.img {
-  box-shadow: 0 5px 10px rgb(0 0 0 / 12%);
+.mainImage {
+  box-shadow: 0 5px 24px rgb(0 0 0 / 12%);
+  margin-bottom: 50px;
 }
 
 .number {

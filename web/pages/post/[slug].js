@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import client from '../../client.js'
 import BlockContent from '@sanity/block-content-to-react'
@@ -5,13 +6,35 @@ import groq from 'groq'
 import styles from '../css.module.css';
 
 
-import React, { useEffect } from 'react'
+import imageUrlBuilder from '@sanity/image-url'
+
+// Get a pre-configured url-builder from your sanity client
+const builder = imageUrlBuilder(client)
+
+function urlFor(source) {
+    return builder.image(source)
+}
+
+
 
 const Post = (props) => {
+    const [imgUrl, setImgUrl] = useState("")
+
     const router = useRouter()
     useEffect(() => {
         console.log(props)
     }, [])
+
+    useEffect(() => {
+        const imgBuilder = imageUrlBuilder({
+            projectId: "6btzanu1",
+            dataset: 'production',
+        })
+        setImgUrl(imgBuilder.image(props.mainImage).width(2000).height(800))
+
+    }, [props.mainImage])
+
+
 
     const overrides = {
         date: props => <p className={styles.date} {...props} />,
@@ -35,25 +58,16 @@ const Post = (props) => {
         }
     }
 
-    const image = (
-        <img
-            width={2000}
-            height={1000}
-            alt={`Cover Image for ${title}`}
-            className={cn('shadow-small', {
-                'hover:shadow-medium transition-shadow duration-200': slug,
-            })}
-            src={imageBuilder.image(url).height(1000).width(2000).url()}
-        />
-    )
+
 
     return (
         <div className={styles.blogContainer}>
             <article className={styles.article} >
                 <h1 className={styles.title}>{props.title.toUpperCase()}</h1>
+                {imgUrl && <img className={styles.mainImage} src={imgUrl} />}
                 <BlockContent
                     blocks={props.body}
-                    imageOptions={{ w: 2000, h: 850, fit: 'crop' }}
+                    imageOptions={{ w: 500, h: 500, fit: 'crop' }}
                     serializers={serializers}
                     {...client.config()}
                 />
@@ -62,12 +76,7 @@ const Post = (props) => {
     )
 }
 
-const query = groq`*[_type == "post" && slug.current == $slug][0]{
-    title,
-    "name": author->name,
-    "categories": categories[]->title,
-    body
-  }`
+const query = groq`*[_type == "post" && slug.current == $slug][0]`
 
 Post.getInitialProps = async (ctx) => {
     const { slug = "" } = ctx.query
