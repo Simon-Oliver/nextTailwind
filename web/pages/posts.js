@@ -17,7 +17,6 @@ function urlFor(source) {
 }
 
 
-
 const Post = (props) => {
     const [imgUrl, setImgUrl] = useState("")
 
@@ -67,10 +66,12 @@ const Post = (props) => {
         })
         return Object.keys(posts).map((k, i) => {
             return (
-                <>
-                    <img src={imgBuilder.image(posts[k]["mainImage"]).width(100).height(80)} />
-                    <Link href={`/post/${posts[k]["slug"].current}`}><a>{posts[k]["title"]}</a></Link>
-                </>
+                <Link href={`/post/${posts[k]["slug"].current}`}><a>
+                    <div className={styles.postCard}>
+                        <img className={styles.imgPosts} src={imgBuilder.image(posts[k]["mainImage"]).width(300).height(300)} />
+                        <p className={styles.textPost}>{posts[k]["title"]}</p>
+                    </div>
+                </a></Link>
             )
         })
     }
@@ -78,7 +79,6 @@ const Post = (props) => {
 
     return (
         <div className={styles.blogContainer}>
-            <p>Posts</p>
             {renderPosts(props)}
         </div>
     )
