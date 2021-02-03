@@ -19,6 +19,7 @@ function urlFor(source) {
 
 const Post = (props) => {
     const [imgUrl, setImgUrl] = useState("")
+    const [category, setCategory] = useState('Food')
 
     const router = useRouter()
     useEffect(() => {
@@ -35,6 +36,10 @@ const Post = (props) => {
     }, [props.mainImage])
 
 
+    const onBtnClick = (e) => {
+        e.preventDefault()
+        console.log(e.target.innerHTML)
+    }
 
     const overrides = {
         date: props => <p className={styles.date} {...props} />,
@@ -79,12 +84,17 @@ const Post = (props) => {
 
     return (
         <div className={styles.blogContainer}>
+            <button onClick={e => onBtnClick(e)} >Food</button>
+            <button onClick={e => onBtnClick(e)}>Design</button>
             {renderPosts(props)}
         </div>
     )
 }
 
 const query = groq`*[_type == "post"]`
+
+
+//`*[_type == "post"]`
 
 Post.getInitialProps = async (ctx) => {
     const { slug = "" } = ctx.query
