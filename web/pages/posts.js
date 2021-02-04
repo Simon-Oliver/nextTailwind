@@ -91,7 +91,7 @@ const Post = (props) => {
     )
 }
 
-const query = groq`*[_type == "post"]`
+const query = groq`*[_type == "post"]{body, mainImage,slug,title,"categories": categories[]->title}`
 
 
 //`*[_type == "post"]`
