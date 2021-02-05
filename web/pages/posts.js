@@ -5,6 +5,7 @@ import BlockContent from '@sanity/block-content-to-react'
 import groq from 'groq'
 import styles from './css.module.css';
 import Link from "next/link"
+import moment from "moment"
 
 
 import imageUrlBuilder from '@sanity/image-url'
@@ -24,6 +25,7 @@ const Post = (props) => {
     const router = useRouter()
     useEffect(() => {
         console.log(props)
+        console.log(category)
     }, [])
 
     useEffect(() => {
@@ -35,10 +37,13 @@ const Post = (props) => {
 
     }, [props.mainImage])
 
+    useEffect(() => {
+        console.log(category)
+    }, [category])
 
     const onBtnClick = (e) => {
         e.preventDefault()
-        console.log(e.target.innerHTML)
+        setCategory(e.target.innerHTML)
     }
 
     const overrides = {
@@ -69,12 +74,21 @@ const Post = (props) => {
             projectId: "6btzanu1",
             dataset: 'production',
         })
-        return Object.keys(posts).map((k, i) => {
+        let filtered = Object.keys(posts).map(k => {
+            return posts[k]
+        }).filter(e => e.categories.includes(category))
+
+        console.log("filtered array", filtered)
+
+        return filtered.map((e) => {
             return (
-                <Link href={`/post/${posts[k]["slug"].current}`}><a>
+                <Link href={`/post/${e["slug"].current}`}><a>
                     <div className={styles.postCard}>
-                        <img className={styles.imgPosts} src={imgBuilder.image(posts[k]["mainImage"]).width(300).height(300)} />
-                        <p className={styles.textPost}>{posts[k]["title"]}</p>
+                        <img className={styles.imgPosts} src={imgBuilder.image(e["mainImage"]).width(300).height(300)} />
+                        <div class={styles.postBody}>
+                            <p className={styles.postTitle}>{e["title"]}</p>
+                            <p className={styles.postDate}>{moment(e.publishedAt).format("DD.MM.YYYY HH:mm ")}</p>
+                        </div>
                     </div>
                 </a></Link>
             )
@@ -83,15 +97,20 @@ const Post = (props) => {
 
 
     return (
-        <div className={styles.blogContainer}>
-            <button onClick={e => onBtnClick(e)} >Food</button>
-            <button onClick={e => onBtnClick(e)}>Design</button>
-            {renderPosts(props)}
+        <div>
+            <nav className={styles.navBar}>
+                <button className={category == "Food" ? `${styles.tagBtn} ${styles.tagActive}` : `${styles.tagBtn}`} onClick={e => onBtnClick(e)} >Food</button>
+                <button className={category == "Design" ? `${styles.tagBtn} ${styles.tagActive}` : `${styles.tagBtn}`} onClick={e => onBtnClick(e)}>Design</button>
+            </nav>
+            <div className={styles.blogContainer}>
+
+                {renderPosts(props)}
+            </div>
         </div>
     )
 }
 
-const query = groq`*[_type == "post"]{body, mainImage,slug,title,"categories": categories[]->title}`
+const query = groq`*[_type == "post"]{body, mainImage,slug,title,publishedAt,"categories": categories[]->title}`
 
 
 //`*[_type == "post"]`
