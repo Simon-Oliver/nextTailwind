@@ -50,6 +50,7 @@ const Post = (props) => {
         date: props => <p className={styles.date} {...props} />,
         h2: props => <h2 className={styles.subheading1} {...props} />,
         h3: props => <h3 className={styles.subheading2} {...props} />,
+        img: props => <img className={styles.imgPosts} {...props} />,
     }
 
     const serializers = {
@@ -87,7 +88,7 @@ const Post = (props) => {
                         <img className={styles.imgPosts} src={imgBuilder.image(e["mainImage"]).width(300).height(300)} />
                         <div class={styles.postBody}>
                             <p className={styles.postTitle}>{e["title"]}</p>
-                            <p className={styles.postDate}>{moment(e.publishedAt).format("DD.MM.YYYY HH:mm ")}</p>
+                            <p className={styles.postDate}>{moment(e.publishedAt).format("MMMM DD, yyyy")}</p>
                         </div>
                     </div>
                 </a></Link>

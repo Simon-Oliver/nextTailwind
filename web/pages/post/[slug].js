@@ -4,7 +4,7 @@ import client from '../../client.js'
 import BlockContent from '@sanity/block-content-to-react'
 import groq from 'groq'
 import styles from '../css.module.css';
-
+import moment from "moment"
 
 import imageUrlBuilder from '@sanity/image-url'
 
@@ -65,6 +65,7 @@ const Post = (props) => {
             <article className={styles.article} >
                 <h1 className={styles.title}>{props.title.toUpperCase()}</h1>
                 {imgUrl && <img className={styles.mainImage} src={imgUrl} />}
+                <p className={styles.date}>{moment(props.publishedAt).format("MMMM DD, yyyy")}</p>
                 <BlockContent
                     blocks={props.body}
                     imageOptions={{ w: 500, h: 500, fit: 'crop' }}
