@@ -68,7 +68,7 @@ const Post = (props) => {
                 <p className={styles.date}>{moment(props.publishedAt).format("MMMM DD, yyyy")}</p>
                 <BlockContent
                     blocks={props.body}
-                    imageOptions={{ w: 500, h: 500, fit: 'crop' }}
+                    // imageOptions={{ w: 500, h: 500, fit: 'crop' }}
                     serializers={serializers}
                     {...client.config()}
                 />
