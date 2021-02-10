@@ -11,10 +11,9 @@ import imageUrlBuilder from '@sanity/image-url'
 // Get a pre-configured url-builder from your sanity client
 const builder = imageUrlBuilder(client)
 
-function urlFor(source) {
+function urlFor(source) {j
     return builder.image(source)
 }
-
 
 
 const Post = (props) => {

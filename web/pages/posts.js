@@ -50,6 +50,7 @@ const Post = (props) => {
         date: props => <p className={styles.date} {...props} />,
         h2: props => <h2 className={styles.subheading1} {...props} />,
         h3: props => <h3 className={styles.subheading2} {...props} />,
+        image: props => <img className={styles.imgPosts} {...props} />,
     }
 
     const serializers = {
