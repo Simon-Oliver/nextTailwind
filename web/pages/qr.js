@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import dynamic from 'next/dynamic'
 const QrReader = dynamic(() => import('react-qr-reader'), {
@@ -8,6 +8,9 @@ const QrReader = dynamic(() => import('react-qr-reader'), {
 export default function qr() {
     const [result, setResult] = useState([])
 
+    useEffect(() => {
+        console.log(result)
+    }, [result])
 
     const handleScan = data => {
         if (data) {
@@ -31,9 +34,9 @@ export default function qr() {
                 delay={300}
                 onError={handleError}
                 onScan={handleScan}
-                style={{ width: '100%' }}
+                style={{ width: '20%' }}
             />
-            <p>{renderResult}</p>
+            <p>{renderResult()}</p>
         </div>
     )
 }
