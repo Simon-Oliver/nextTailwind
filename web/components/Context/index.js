@@ -1,4 +1,2 @@
-import TestContext, { TestProvider } from "./context"
-
-export const TestProvider = TestProvider
+import TestContext from "./context"
 export default TestContext
