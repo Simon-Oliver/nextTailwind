@@ -1,30 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Messages from "../components/Message/Messages"
-import TestContext from "../components/Context"
+import { TestContext } from "../components/Context"
+import { ThemeContext } from "../components/Context"
 import axios from "axios"
 
 
 export default function Test(props) {
 
-  const [users, setUsers] = useState([
-    { uid: 123, name: "Urs", status: "online" },
-    { uid: 345, name: "Tom", status: "offline" },
-    { uid: 908, name: "James", status: "online" }
-
-  ])
-
-  const context = useContext(TestContext)
+  const users = useContext(TestContext)
+  const theme = useContext(ThemeContext)
 
   useEffect(() => {
-    console.log("Initial Render")
-    console.log("Our context ", context)
-    return () => {
-      cleanup
-    }
-  }, [])
+    console.log(theme)
+  })
 
-  const renderUser = () => {
-    return users.map(e => {
+  const renderUser = (data) => {
+    return data.map(e => {
       return (<div>
         <button
           className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
@@ -45,7 +36,7 @@ export default function Test(props) {
 
   return (
     <div >
-      {renderUser()}
+      {renderUser(users)}
     </div>
   )
 }

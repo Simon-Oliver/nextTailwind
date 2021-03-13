@@ -1,2 +1,4 @@
 import TestContext from "./context"
-export default TestContext
+import ThemeContext from "./themeContext"
+
+export { TestContext, ThemeContext }
