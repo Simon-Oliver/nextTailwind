@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Messages from "../components/Message/Messages"
 import { TestContext } from "../components/Context"
 import { ThemeContext } from "../components/Context"
+import styles from '../styles/Home.module.css'
 import axios from "axios"
 
 
@@ -35,7 +36,7 @@ export default function Test(props) {
   }
 
   return (
-    <div >
+    <div className={theme ? styles.dark : ""}>
       {renderUser(users)}
     </div>
   )

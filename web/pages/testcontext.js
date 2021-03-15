@@ -12,11 +12,7 @@ export default function testcontext() {
         { uid: 345, name: "Tom", status: "offline" },
         { uid: 908, name: "James", status: "online" }
     ])
-
-    const theme = {
-        background: "green",
-        color: "red"
-    }
+    const [darkMode, setDarkMode] = useState(false)
 
     useEffect(() => {
         console.log("Test Context ------", data)
@@ -30,13 +26,18 @@ export default function testcontext() {
         setData([...data, { uid, name, length }])
     }
 
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode)
+    }
+
 
     return (
         <div>
-            <ThemeProvider value={theme}>
+            <ThemeProvider value={darkMode}>
                 <TestProvider value={data}>
                     <Test ></Test>
                     <button onClick={clickHandler}>Button</button>
+                    <button onClick={toggleDarkMode}>Toggle</button>
                 </TestProvider>
             </ThemeProvider>
 

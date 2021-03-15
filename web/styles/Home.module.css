@@ -114,6 +114,10 @@
   height: 1em;
 }
 
+.dark {
+  background-color: aqua;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
