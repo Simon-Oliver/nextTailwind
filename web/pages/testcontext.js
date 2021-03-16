@@ -8,10 +8,11 @@ const TestProvider = TestContext.Provider
 
 export default function testcontext() {
     const [data, setData] = useState([
-        { uid: 123, name: "Urs", status: "online" },
-        { uid: 345, name: "Tom", status: "offline" },
-        { uid: 908, name: "James", status: "online" }
+        { id: 1, boxName: "Box q", content: [{ itemId: 1, itemName: "Item 1", weight: 500, value: 50 }] }
     ])
+
+    const contextValue = { data, setData }
+
     const [darkMode, setDarkMode] = useState(false)
 
     useEffect(() => {
@@ -23,7 +24,7 @@ export default function testcontext() {
         const name = `Name ${uid}`
         const status = "online"
 
-        setData([...data, { uid, name, length }])
+        setData([...data, data[0]])
     }
 
     const toggleDarkMode = () => {
@@ -34,13 +35,12 @@ export default function testcontext() {
     return (
         <div>
             <ThemeProvider value={darkMode}>
-                <TestProvider value={data}>
+                <TestProvider value={contextValue}>
                     <Test ></Test>
                     <button onClick={clickHandler}>Button</button>
                     <button onClick={toggleDarkMode}>Toggle</button>
                 </TestProvider>
             </ThemeProvider>
-
         </div >
     )
 }

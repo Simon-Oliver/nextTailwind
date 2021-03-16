@@ -8,15 +8,16 @@ import axios from "axios"
 
 export default function Test(props) {
 
-  const users = useContext(TestContext)
+  const { data, setData } = useContext(TestContext)
   const theme = useContext(ThemeContext)
 
   useEffect(() => {
     console.log(theme)
   })
 
-  const renderUser = (data) => {
-    return data.map(e => {
+  const renderUser = (el) => {
+    console.log(el)
+    return el.map(e => {
       return (<div>
         <button
           className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
@@ -24,9 +25,9 @@ export default function Test(props) {
           <div
             className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
           >
-            {e.name[0]}
+            {e.boxName[0]}
           </div>
-          <div className="ml-2 text-sm font-semibold">{e.name}</div>
+          <div className="ml-2 text-sm font-semibold">{e.boxName}</div>
         </button>
         <button
           className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
@@ -37,7 +38,7 @@ export default function Test(props) {
 
   return (
     <div className={theme ? styles.dark : ""}>
-      {renderUser(users)}
+      {renderUser(data)}
     </div>
   )
 }

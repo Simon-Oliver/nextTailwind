@@ -1,3 +1,6 @@
 import React from 'react'
-const TestContext = React.createContext({})
+const TestContext = React.createContext({
+    data: [],
+    setData: () => { }
+})
 export default TestContext
